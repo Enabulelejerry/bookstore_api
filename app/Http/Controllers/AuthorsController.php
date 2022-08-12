@@ -88,11 +88,7 @@ class AuthorsController extends Controller
     public function update(AuthorRequest $request, $id)
     {
        
-        // $validateData = $request->validate([
-        //     'name' => 'required|unique:authors|max:255'
-            
-        // ]);
-       
+
       $updatename = Author::find($id);
       $updatename->name = $request->input('name');
       $updatename->update();

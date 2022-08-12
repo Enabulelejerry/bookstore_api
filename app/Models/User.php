@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -31,7 +32,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'created_at',
+        'updated_at',
+       
     ];
+
+
 
     /**
      * The attributes that should be cast.
@@ -41,4 +47,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function userProfile()
+    {
+        return $this->hasOne('\App\Models\UserProfile');
+    }
+
+    public function stores()
+    {
+        return $this->hasMany(Store::class,'owner_id');
+    }
+
+    // public function users(){
+    //     return $this->belongsToMany(User::class,'store_admins');
+    // }
 }
